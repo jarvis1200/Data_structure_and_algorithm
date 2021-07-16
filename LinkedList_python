@@ -1,0 +1,139 @@
+class Node:
+    def __init__(self, data = None, next = None):
+        self.data = data
+        self.next = next
+        
+class Linkedlist:
+    def __init__(self):
+        self.head = None
+        
+    def insert_at_beginning(self, data):
+        node = Node(data, self.head)
+        self.head = node
+        
+    def print(self):
+        if self.head is None:
+            print('Empty list')
+            return
+        
+        it = self.head
+        itstr = ''
+        while it:
+            itstr += str(it.data) + ' --> '
+            it = it.next
+            
+        print(itstr)
+        
+    def insert_at_end(self,data):
+        if self.head is None:
+            self.head = Node(data, None)
+            return
+        
+        it = self.head
+        while it.next:
+            it = it.next
+            
+        it.next = Node(data, None)
+        
+    def insert_values(self,Dataset):
+        self.head = None
+        for data in Dataset:
+            self.insert_at_end(data)
+            
+    def len_list(self):
+        it = self.head
+        
+        cnt = 0
+        while it:
+            cnt+=1
+            it = it.next
+            
+        return cnt
+        
+    def remove_at(self, ind):
+        if ind < 0 or ind > self.len_list():
+            raise Exception('invalid index')
+            
+        if ind == 0:
+            self.head = self.head.next
+            return
+        
+        cnt = 0
+        it = self.head
+        
+        while it:
+            if cnt == ind-1:
+                it.next = it.next.next
+                break
+            it = it.next
+            cnt+=1
+            
+            
+    def insert_at(self, data, ind):
+        if ind < 0 or ind > self.len_list():
+            raise Exception('invalid index')
+            
+        if ind == 0:
+            node = Node(data, self.head)
+            self.head = node
+            return
+        
+        cnt = 0
+        it = self.head
+        while it:
+            if cnt == ind-1:
+                node = Node(data, it.next)
+                it.next = node
+                break
+                
+            it = it.next
+            cnt +=1
+            
+    def insert_after_val(self, val, data):
+        it = self.head
+        while it:
+            if it.data == val:
+                it.next = Node(data, it.next)
+                it.next = it.next
+                break
+            it = it.next
+        return False
+        
+    def remove_by_val(self, data):
+        
+        
+        if self.head.data == data:
+            self.head = self.head.next
+            return
+        
+        it = self.head
+        while it is not None:
+            if it.next is not None and it.next.data == data:
+                it.next = it.next.next
+            else:
+                it = it.next
+    
+        return False
+                
+        
+        
+        
+        
+        
+ll = Linkedlist()
+ll.insert_values(["banana","mango","grapes","orange"])
+ll.print()
+ll.insert_after_val("mango","apple") # insert apple after mango
+ll.print()
+ll.remove_by_val("orange") # remove orange from linked list
+ll.print()
+ll.remove_by_val("figs")
+ll.print()
+ll.remove_by_val("banana")
+ll.remove_by_val("mango")
+ll.remove_by_val("apple")
+ll.remove_by_val("grapes")
+ll.print()
+ll.insert_values([45,7,12,567,99])
+ll.insert_at_end(67)
+ll.print()
