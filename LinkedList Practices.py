@@ -292,6 +292,32 @@ class Linkedlist:
                 if fast is slow:
                     print('True')
             print('False')
+            
+            
+    def circulateLinkedList(self,items):
+        if len(items) == 0:
+            return None
+        head = Node(items[0])
+        tail = head
+        for i in range(1, len(items)):
+            tail.next = Node(items[i])
+            tail = tail.next
+        tail.next = head
+        return head
+        
+    def display_circulated(self,head):
+        if head is None:
+            print("Empty Linked List")
+            return
+        flag = 0
+        p = head
+        t = ''
+        while p != head or flag == 0:
+            flag = 1
+            t += str(p.data) + '==>'
+            p = p.next
+        flag = 0
+        print(t)
         
         
         
