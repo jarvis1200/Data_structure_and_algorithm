@@ -283,9 +283,15 @@ class Linkedlist:
         
         
 
-
-                
-        
+     def find_loop(self, head):
+            fast = head
+            slow = head
+            while fast is not None and fast.next is not None:
+                fast = fast.next.next
+                slow = slow.next
+                if fast is slow:
+                    print('True')
+            print('False')
         
         
         
