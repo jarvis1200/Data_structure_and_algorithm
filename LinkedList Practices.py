@@ -319,6 +319,32 @@ class Linkedlist:
         flag = 0
         print(t)
         
+    def insert_circulated(self, head,pos, val):
+        
+        if pos == 0:
+            t = Node(val, None)
+            if head == None:
+                head = t
+                head.next = head
+            else:
+                p = head
+                while(p.next != head):
+                    p = p.next
+                p.next = t
+                t.next = head
+                head = t
+                
+        else:
+            t = Node(val, None)
+            p = head
+            for i in range(pos-1):
+                p =p.next
+            
+            t.next = p.next
+            p.next = t
+            
+        return head
+        
         
         
         
