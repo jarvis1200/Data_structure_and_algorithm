@@ -344,6 +344,28 @@ class Linkedlist:
             p.next = t
             
         return head
+    
+    
+    def circle_length(self,head):
+        if head is None:
+            return 0
+        else:
+            count = 1
+            curr = head
+            while curr.next != head:
+                count += 1
+                curr = curr.next
+            return count
+            
+    def delete_circle(self, head, position):
+        if position == 0:
+            return head.next
+        else:
+            current = head
+            for i in range(position - 1):
+                current = current.next
+            current.next = current.next.next
+            return head
         
         
         
@@ -371,3 +393,12 @@ l.print(first)
 l.print(second)
 A= l.merge_LL(first, second)
 l.print(A)
+
+A = l.circulateLinkedList([1,2,3,4,5,6])
+l.display(A)
+W = l.insert_circulated(A,4, 9)
+l.display(W)
+R = l.circle_length(A)
+print(R)
+T = l.delete_circle(W, 6)
+l.display(T)
