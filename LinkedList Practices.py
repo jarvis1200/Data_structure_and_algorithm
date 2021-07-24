@@ -402,3 +402,123 @@ R = l.circle_length(A)
 print(R)
 T = l.delete_circle(W, 6)
 l.display(T)
+
+
+#Double Linked List
+class Node:
+    def __init__(self, data = None):
+        self.data = data
+        self.next = None
+        self.prev = None
+        
+class LinkedList:
+    def __init__(self):
+        self.head = None
+    
+    def create_double(self,items):
+        self.head = Node(items[0])
+        head = self.head
+        tail = head
+        for item in items[1:]:
+            tail = Node(item)
+            head.next = tail
+            tail.prev = head
+            head = tail
+            
+        return self.head
+            
+    
+       
+       
+    def get_val(self,head):
+        cnt = 0
+        while head:
+            cnt+=1
+            head = head.next
+               
+        return cnt
+        
+    def display(self, head):
+        if head is None:
+            print('Empty list')
+            return
+        
+        it = head
+        itstr = ''
+        while it:
+            itstr += str(it.data) + '-->'
+            it = it.next
+       
+        print(itstr)
+        
+    def insert_val(self, head,pos, val):
+        if pos < 0 or pos > self.get_val(head):
+            return -1
+            
+        t = Node(val)
+        if pos == 0:
+            t.next = head
+            head.prev = t
+            head = t
+        else:    
+            curr = head
+            for i in range(pos-1):
+                curr = curr.next
+                
+            t.next = curr.next
+            t.prev = curr
+            
+            if curr.next:
+                curr.next.prev = t
+            curr.next = t
+        return head
+        
+        
+    def double_del(self, head, pos):
+        first = head
+        
+        if pos < 0 or pos > self.get_val(head):
+            return -1
+            
+        if pos == 0:
+            head = head.next
+            x = first.data
+            del x
+            if head:
+                head.prev = None
+                
+        else:
+            curr = head
+            for i in range(pos-1):
+                curr = curr.next
+                
+            curr.prev.next = curr.next
+            if curr.next:
+                curr.next.prev = curr.prev
+            x = curr.data
+            del curr
+                
+        return head
+        
+    def reverse_double(self,head):
+        p = head
+        while p:
+            temp = p.next
+            p.next = p.prev
+            p.prev = temp
+            p = p.prev
+            if p != None and p.next == None:
+                head = p
+        return head
+            
+     
+            
+l = LinkedList()
+A = l.create_double([1,2,3,4,5])
+l.display(A)
+Q = l.insert_val(A, 5, 6)
+l.display(Q)
+W = l.double_del(Q, 3)
+l.display(W)
+R = l.reverse_double(W)
+l.display(R)
