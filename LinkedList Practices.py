@@ -293,7 +293,7 @@ class Linkedlist:
                     print('True')
             print('False')
             
-            
+     # Circulated Linked List   
     def circulateLinkedList(self,items):
         if len(items) == 0:
             return None
@@ -522,3 +522,167 @@ W = l.double_del(Q, 3)
 l.display(W)
 R = l.reverse_double(W)
 l.display(R)
+
+
+# Circulated Double Linked List
+class Node:
+    def __init__(self, data = None):
+        self.data = data
+        self.next = None
+        self.prev =None
+        
+class Linkedlist:
+    def __init__(self):
+        self.head = None
+        
+        
+    def create_cirDouble(self, items):
+        if items is None:
+            return -1
+            
+        self.head = Node(items[0])
+        head = self.head
+        tail = head
+        
+        for item in items[1:]:
+            tail = Node(item)
+            head.next = tail
+            tail.prev = head
+            head = tail
+        if tail.next == None:
+            tail.next = self.head
+            self.head.prev = tail   
+        
+        return self.head
+        
+    
+    def display_CD(self, head):
+        if head is None:
+            return -1
+        it = head   
+        itstr = ''
+        first = head
+        flag = 0
+        while it != first or flag ==0:
+            flag = 1
+            itstr += str(it.data) + '-->'
+            it = it.next
+        flag = 0
+            
+        print(itstr)
+        
+    def get_length(self,head):
+        if head is None:
+            return 0
+        else:
+            count = 1
+            first = head
+            while head.next != first:
+                count += 1
+                head = head.next
+            return count
+            
+    def insert_at_index(self,ind, data, head):
+        if ind < 0 or ind > self.get_length(head):
+            return -1
+            
+        t = Node(data)   
+        if ind == 0:
+            if head == None:
+                head = t
+                head.next = head
+            else:
+                p = head
+                first = head
+                while(p.next != head):
+                    p = p.next
+                t.next = first
+                first.prev = t
+                
+                p.next = t
+                t.prev = p
+                head = t
+                
+        elif ind == self.get_length(head):
+            first = head
+            p = head
+            for i in range(ind-1):
+                p =p.next
+            
+            p.next = t
+            t.prev = p
+            
+            t.next = first
+            first.prev = t
+            
+        else:
+            
+            p = head
+            for i in range(ind-1):
+                p =p.next
+            
+            t.next = p.next
+            t.prev = p
+            if p.next:
+                p.next.prev = t
+            p.next = t
+            
+        return head
+        
+    def del_CD(self, head,ind):
+        if ind < 0 or ind > self.get_length(head):
+            return -1
+            
+        if ind == 0:
+            first = head
+            tail = head
+            t = first.next
+            while(tail.next != first):
+                    tail = tail.next
+            x = first
+            del x
+            tail.next = t
+            t.prev = tail
+            head = t
+            
+        elif ind == self.get_length(head):
+            first = head
+            tail = head
+            for i in range(ind-1):
+                tail =tail.next
+                
+            t = tail.prev
+            x  = tail
+            del x
+            t.next = first
+            first.prev = t
+            head = first
+            
+        else:
+            
+            p = head
+            for i in range(ind-1):
+                p =p.next
+            t = p.prev
+            n = p.next
+            t.next = n
+            n.prev = t
+            x = p
+            del x
+            
+            
+        return head
+            
+        
+    
+        
+LL = Linkedlist()
+Q = LL.create_cirDouble([1,2,3,4,5])
+LL.display_CD(Q)
+print(LL.get_length(Q))
+E = LL.insert_at_index(5, 6, Q)
+LL.display_CD(E)
+D= LL.del_CD(E,5)
+LL.display_CD(D)
+
+
