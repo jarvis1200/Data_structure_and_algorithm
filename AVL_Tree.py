@@ -67,8 +67,8 @@ class AVL:
         pl.right = plr.left
         p.left = plr.right
 
-        plr.left = p
-        plr.right = pl
+        plr.left = pl
+        plr.right = p
 
         p.height = self.nodeHeight(p)
         pl.height = self.nodeHeight(pl)
