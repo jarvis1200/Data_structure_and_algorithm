@@ -7039,6 +7039,2389 @@ class LFUCache:
             self.minFreq += 1
         return node.val
 
+#https://leetcode.com/problems/lfu-cache/discuss/?currentPage=1&orderBy=most_votes&query=
 
+'''Largest Rectangle in Histogram
+Hard
+
+6858
+
+116
+
+Add to List
+
+Share
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.
+
+ 
+
+Example 1:
+
+
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+Example 2:
+
+
+Input: heights = [2,4]
+Output: 4
+ 
+
+Constraints:
+
+1 <= heights.length <= 105
+0 <= heights[i] <= 104'''
+
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        n = len(heights)
+        lefti = [0] * n
+        righti = [0] * n
+        st =[]
+        
+        for i in range(n):
+            while st and heights[st[-1]] >= heights[i]:
+                st.pop()
+            
+            if st:
+                lefti[i] = st[-1] + 1
+            else:
+                lefti[i] = 0
+            
+            st.append(i)
+            
+        print(lefti)
+        
+        while st != []:
+            st.pop()
+            
+        for i in range(n-1, -1, -1):
+            while st and heights[st[-1]] >= heights[i]:
+                st.pop()
+                
+            if st:
+                righti[i] = st[-1] - 1
+            else:
+                righti[i] = n-1
+            
+            st.append(i)
+            
+        print(righti)   
+        maxA = 0
+        
+        for i in range(n):
+            maxA = max(maxA, (heights[i] * (righti[i] - lefti[i] + 1)))
+            
+        return maxA
+
+'''Your input
+[2,1,5,6,2,3]
+stdout
+[0, 0, 2, 3, 2, 5]
+[0, 5, 3, 3, 5, 5]
+
+Output
+10
+Expected
+10'''
+
+#or
+
+class Solution:
+    def largestRectangleArea(self, heights: List[int]) -> int:
+        n = len(heights)
+        st =[]
+        maxA = 0
+        for i in range(n+1):
+            while st and (i == n or heights[st[-1]] >= heights[i]):
+                H = heights[st.pop()]
+                
+                if st:
+                    W = i - st[-1] -1
+                else:
+                    W = i
+                    
+                maxA = max(maxA, (W * H))
+                
+            st.append(i)
+            
+        return maxA
+
+'''The stack maintain the indexes of buildings with ascending height. Before adding a new building pop the building who is taller than the new one.
+ The building popped out represent the height of a rectangle with the new building as the right boundary and the current stack top as the left boundary.
+ Calculate its area and update ans of maximum area. Boundary is handled using dummy buildings.'''
+
+'''Sliding Window Maximum
+Hard
+
+6939
+
+256
+
+Add to List
+
+Share
+You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position.
+
+Return the max sliding window.
+
+ 
+
+Example 1:
+
+Input: nums = [1,3,-1,-3,5,3,6,7], k = 3
+Output: [3,3,5,5,6,7]
+Explanation: 
+Window position                Max
+---------------               -----
+[1  3  -1] -3  5  3  6  7       3
+ 1 [3  -1  -3] 5  3  6  7       3
+ 1  3 [-1  -3  5] 3  6  7       5
+ 1  3  -1 [-3  5  3] 6  7       5
+ 1  3  -1  -3 [5  3  6] 7       6
+ 1  3  -1  -3  5 [3  6  7]      7
+Example 2:
+
+Input: nums = [1], k = 1
+Output: [1]
+Example 3:
+
+Input: nums = [1,-1], k = 1
+Output: [1,-1]
+Example 4:
+
+Input: nums = [9,11], k = 2
+Output: [11]
+Example 5:
+
+Input: nums = [4,-2], k = 2
+Output: [4]
+ 
+
+Constraints:
+
+1 <= nums.length <= 105
+-104 <= nums[i] <= 104
+1 <= k <= nums.length
+'''
+
+def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+    dq = []
+    n = len(nums)
+    ans = []
+    for i in range(n):
+        if dq and dq[0] == i-k:
+            dq.pop(0)
+            
+        while dq and nums[dq[-1]] < nums[i]:
+            dq.pop()
+            
+        dq.append(i)
+        
+        if i >= k-1:
+            ans.append(nums[dq[0]])
+    return ans
+
+'''Your input
+[1,3,-1,-3,5,3,6,7]
+3
+Output
+[3,3,5,5,6,7]
+Expected
+[3,3,5,5,6,7]'''
+
+class Solution:
+    def maxSlidingWindow(self, nums, k):
+        d = collections.deque()
+        out = []
+        for i, n in enumerate(nums):
+            while d and nums[d[-1]] < n:
+                d.pop()
+            d += i,
+            if d[0] == i - k:
+                d.popleft()
+            if i >= k - 1:
+                out += nums[d[0]],
+        return out
+
+'''Min Stack
+Easy
+
+5726
+
+510
+
+Add to List
+
+Share
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+Implement the MinStack class:
+
+MinStack() initializes the stack object.
+void push(val) pushes the element val onto the stack.
+void pop() removes the element on the top of the stack.
+int top() gets the top element of the stack.
+int getMin() retrieves the minimum element in the stack.
+ 
+
+Example 1:
+
+Input
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+
+Output
+[null,null,null,null,-3,null,0,-2]
+
+Explanation
+MinStack minStack = new MinStack();
+minStack.push(-2);
+minStack.push(0);
+minStack.push(-3);
+minStack.getMin(); // return -3
+minStack.pop();
+minStack.top();    // return 0
+minStack.getMin(); // return -2
+ 
+
+Constraints:
+
+-231 <= val <= 231 - 1
+Methods pop, top and getMin operations will always be called on non-empty stacks.
+At most 3 * 104 calls will be made to push, pop, top, and getMin.'''
+
+class MinStack:
+
+    def __init__(self):
+        self.stack= []
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: nothing
+        """
+        if not self.stack:self.stack.append((x,x)) 
+        else:
+            self.stack.append((x,min(x,self.stack[-1][1])))
+
+    def pop(self):
+        """
+        :rtype: nothing
+        """
+        if self.stack: self.stack.pop()
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        if self.stack: return self.stack[-1][0]
+        else: return None
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        if self.stack: return self.stack[-1][1]
+        else: return None
+
+
+# Your MinStack object will be instantiated and called as such:
+# obj = MinStack()
+# obj.push(val)
+# obj.pop()
+# param_3 = obj.top()
+# param_4 = obj.getMin()
+
+'''Your input
+["MinStack","push","push","push","getMin","pop","top","getMin"]
+[[],[-2],[0],[-3],[],[],[],[]]
+Output
+[null,null,null,null,-3,null,0,-2]
+Expected
+[null,null,null,null,-3,null,0,-2]'''
+
+
+'''Rotting Oranges
+Medium
+
+4085
+
+227
+
+Add to List
+
+Share
+You are given an m x n grid where each cell can have one of three values:
+
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
+
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
+
+Example 1:
+
+Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
+Output: 4
+Example 2:
+
+Input: grid = [[2,1,1],[0,1,1],[1,0,1]]
+Output: -1
+Explanation: The orange in the bottom left corner (row 2, column 0) is never rotten, because rotting only happens 4-directionally.
+Example 3:
+
+Input: grid = [[0,2]]
+Output: 0
+Explanation: Since there are already no fresh oranges at minute 0, the answer is just 0.
+ 
+
+Constraints:
+
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 10
+grid[i][j] is 0, 1, or 2.'''
+
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        if grid == None:
+            return 0
+        
+        n = len(grid)
+        m = len(grid[0])
+        
+        q = []
+        tlt = 0
+        days = 0
+        cnt = 0
+        for i in range(n):
+            for j in range(m):
+                if grid[i][j] != 0:
+                    tlt += 1
+                if grid[i][j] == 2:
+                    q.append([i,j])
+                    
+        di = [-1,1,0,0]
+        dj = [0,0,-1,1]
+        
+        while q != []:
+            k = len(q)
+            print(q)
+            cnt += k
+            while k:
+                k-=1
+                first = q.pop(0)
+                x = first[0]
+                y = first[1]
+                for i in range(4):
+                    nx = x + di[i]
+                    ny = y + dj[i]
+                    if nx < 0 or ny < 0 or nx >= n or ny >= m or grid[nx][ny] != 1:
+                        continue
+                    grid[nx][ny] = 2
+                    q.append([nx,ny])
+                
+            if q != []:
+                days += 1
+                
+        if tlt == cnt:
+            return days
+        else: 
+            return -1
+
+'''Accepted
+Runtime: 53 ms
+Your input
+[[2,1,1],[1,1,0],[0,1,1]]
+stdout
+[[0, 0]]
+[[1, 0], [0, 1]]
+[[1, 1], [0, 2]]
+[[2, 1]]
+[[2, 2]]
+
+Output
+4
+Expected
+4'''
+
+#or
+
+from collections import deque
+
+# Time complexity: O(rows * cols) -> each cell is visited at least once
+# Space complexity: O(rows * cols) -> in the worst case if all the oranges are rotten they will be added to the queue
+
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        
+        # number of rows
+        rows = len(grid)
+        if rows == 0:  # check if grid is empty
+            return -1
+        
+        # number of columns
+        cols = len(grid[0])
+        
+        # keep track of fresh oranges
+        fresh_cnt = 0
+        
+        # queue with rotten oranges (for BFS)
+        rotten = deque()
+        
+        # visit each cell in the grid
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c] == 2:
+                    # add the rotten orange coordinates to the queue
+                    rotten.append((r, c))
+                elif grid[r][c] == 1:
+                    # update fresh oranges count
+                    fresh_cnt += 1
+        
+        # keep track of minutes passed.
+        minutes_passed = 0
+        
+        # If there are rotten oranges in the queue and there are still fresh oranges in the grid keep looping
+        while rotten and fresh_cnt > 0:
+
+            # update the number of minutes passed
+            # it is safe to update the minutes by 1, since we visit oranges level by level in BFS traversal.
+            minutes_passed += 1
+            
+            # process rotten oranges on the current level
+            for _ in range(len(rotten)):
+                x, y = rotten.popleft()
+                
+                # visit all the adjacent cells
+                for dx, dy in [(1,0), (-1,0), (0,1), (0,-1)]:
+                    # calculate the coordinates of the adjacent cell
+                    xx, yy = x + dx, y + dy
+                    # ignore the cell if it is out of the grid boundary
+                    if xx < 0 or xx == rows or yy < 0 or yy == cols:
+                        continue
+                    # ignore the cell if it is empty '0' or visited before '2'
+                    if grid[xx][yy] == 0 or grid[xx][yy] == 2:
+                        continue
+                        
+                    # update the fresh oranges count
+                    fresh_cnt -= 1
+                    
+                    # mark the current fresh orange as rotten
+                    grid[xx][yy] = 2
+                    
+                    # add the current rotten to the queue
+                    rotten.append((xx, yy))
 
         
+        # return the number of minutes taken to make all the fresh oranges to be rotten
+        # return -1 if there are fresh oranges left in the grid (there were no adjacent rotten oranges to make them rotten)
+        return minutes_passed if fresh_cnt == 0 else -1
+
+#https://leetcode.com/problems/rotting-oranges/discuss/?currentPage=1&orderBy=most_votes&query=
+
+'''Online Stock Span
+Medium
+
+1764
+
+183
+
+Add to List
+
+Share
+Design an algorithm that collects daily price quotes for some stock and returns the span of that stock's price for the current day.
+
+The span of the stock's price today is defined as the maximum number of consecutive days (starting from today and going backward) for which the stock price was less than or equal to today's price.
+
+For example, if the price of a stock over the next 7 days were [100,80,60,70,60,75,85], then the stock spans would be [1,1,1,2,1,4,6].
+Implement the StockSpanner class:
+
+StockSpanner() Initializes the object of the class.
+int next(int price) Returns the span of the stock's price given that today's price is price.
+ 
+
+Example 1:
+
+Input
+["StockSpanner", "next", "next", "next", "next", "next", "next", "next"]
+[[], [100], [80], [60], [70], [60], [75], [85]]
+Output
+[null, 1, 1, 1, 2, 1, 4, 6]
+
+Explanation
+StockSpanner stockSpanner = new StockSpanner();
+stockSpanner.next(100); // return 1
+stockSpanner.next(80);  // return 1
+stockSpanner.next(60);  // return 1
+stockSpanner.next(70);  // return 2
+stockSpanner.next(60);  // return 1
+stockSpanner.next(75);  // return 4, because the last 4 prices (including today's price of 75) were less than or equal to today's price.
+stockSpanner.next(85);  // return 6
+ 
+
+Constraints:
+
+1 <= price <= 105
+At most 104 calls will be made to next.'''
+
+class StockSpanner:
+
+    def __init__(self):
+        self.st = []
+        
+
+    def next(self, price: int) -> int:
+        res = 1
+        while self.st and self.st[-1][0] <= price:
+            res += self.st.pop()[1]
+        self.st.append([price,res])
+        return res
+
+
+# Your StockSpanner object will be instantiated and called as such:
+# obj = StockSpanner()
+# param_1 = obj.next(price)
+
+'''Your input
+["StockSpanner","next","next","next","next","next","next","next"]
+[[],[100],[80],[60],[70],[60],[75],[85]]
+Output
+[null,1,1,1,2,1,4,6]
+Expected
+[null,1,1,1,2,1,4,6]'''
+
+#OR
+
+class StockSpanner:
+
+    def __init__(self):
+        self.prices = []
+        self.spans = []
+
+    def next(self, price: int) -> int:
+        span = 1
+        index = len(self.spans) - 1
+        while index >= 0 and price >= self.prices[index]:
+            span += self.spans[index]
+            index -= self.spans[index]
+        self.spans.append(span)
+        self.prices.append(price)
+        return span
+
+'''Maximum of minimum for every window size 
+Hard Accuracy: 55.24% Submissions: 8237 Points: 8
+Given an integer array. The task is to find the maximum of the minimum of every window size in the array.
+Note: Window size varies from 1 to the size of the Array.
+
+Example 1:
+
+Input:
+N = 7
+arr[] = {10,20,30,50,10,70,30}
+Output: 70 30 20 10 10 10 10 
+Explanation: First element in output
+indicates maximum of minimums of all
+windows of size 1. Minimums of windows
+of size 1 are {10}, {20}, {30}, {50},
+{10}, {70} and {30}. Maximum of these
+minimums is 70. 
+Second element in output indicates
+maximum of minimums of all windows of
+size 2. Minimums of windows of size 2
+are {10}, {20}, {30}, {10}, {10}, and
+{30}. Maximum of these minimums is 30 
+Third element in output indicates
+maximum of minimums of all windows of
+size 3. Minimums of windows of size 3
+are {10}, {20}, {10}, {10} and {10}.
+Maximum of these minimums is 20. 
+Similarly other elements of output are
+computed.
+Example 2:
+
+Input:
+N = 3
+arr[] = {10,20,30}
+Output: 30 20 10
+Explanation: First element in output
+indicates maximum of minimums of all
+windows of size 1.Minimums of windows
+of size 1 are {10} , {20} , {30}.
+Maximum of these minimums are 30 and
+similarly other outputs can be computed
+Your Task:
+The task is to complete the function maxOfMin() which takes the array arr[] and its size N as inputs and finds the maximum of minimum of every window size and returns an array containing the result. 
+
+Expected Time Complxity : O(N)
+Expected Auxilliary Space : O(N)
+
+Constraints:
+1 <= N <= 105
+1 <= arr[i] <= 106'''
+
+
+# An efficient Python3 program to find
+# maximum of all minimums of windows of 
+# different sizes
+
+def printMaxOfMin(arr, n):
+    
+    s = [] # Used to find previous 
+           # and next smaller 
+
+    # Arrays to store previous and next 
+    # smaller. Initialize elements of 
+    # left[] and right[]
+    left = [-1] * (n + 1) 
+    right = [n] * (n + 1) 
+
+    # Fill elements of left[] using logic discussed on 
+    # https:#www.geeksforgeeks.org/next-greater-element
+    for i in range(n):
+        while (len(s) != 0 and 
+               arr[s[-1]] >= arr[i]): 
+            s.pop() 
+
+        if (len(s) != 0):
+            left[i] = s[-1]
+
+        s.append(i)
+
+    # Empty the stack as stack is going 
+    # to be used for right[] 
+    while (len(s) != 0):
+        s.pop()
+
+    # Fill elements of right[] using same logic
+    for i in range(n - 1, -1, -1):
+        while (len(s) != 0 and arr[s[-1]] >= arr[i]): 
+            s.pop() 
+
+        if(len(s) != 0): 
+            right[i] = s[-1] 
+
+        s.append(i)
+
+    # Create and initialize answer array 
+    ans = [0] * (n + 1)
+    for i in range(n + 1):
+        ans[i] = 0
+
+    # Fill answer array by comparing minimums 
+    # of all. Lengths computed using left[] 
+    # and right[]
+    for i in range(n):
+        
+        # Length of the interval 
+        Len = right[i] - left[i] - 1
+
+        # arr[i] is a possible answer for this
+        #  Length 'Len' interval, check if arr[i] 
+        # is more than max for 'Len' 
+        ans[Len] = max(ans[Len], arr[i])
+
+    # Some entries in ans[] may not be filled 
+    # yet. Fill them by taking values from
+    # right side of ans[]
+    for i in range(n - 1, 0, -1):
+        ans[i] = max(ans[i], ans[i + 1]) 
+
+    # Print the result
+    for i in range(1, n + 1):
+        print(ans[i], end = " ")
+
+# Driver Code
+if __name__ == '__main__':
+
+    arr = [10, 20, 30, 50, 10, 70, 30] 
+    n = len(arr) 
+    printMaxOfMin(arr, n)
+
+# This code is contributed by PranchalK
+
+
+'''For Input:
+7
+10 20 30 50 10 70 30
+
+Your Output is: 
+70 30 20 10 10 10 10 '''
+
+''''''
+
+#O(N)
+
+'''The Celebrity Problem 
+Medium Accuracy: 39.46% Submissions: 82153 Points: 4
+A celebrity is a person who is known to all but does not know anyone at a party. If you go to a party of N people, find if there is a celebrity in the party or not.
+A square NxN matrix M[][] is used to represent people at the party such that if an element of row i and column j  is set to 1 it means ith person knows jth person. Here M[i][i] will always be 0.
+Note: Follow 0 based indexing.
+ 
+
+Example 1:
+
+Input:
+N = 3
+M[][] = {{0 1 0},
+         {0 0 0}, 
+         {0 1 0}}
+Output: 1
+Explanation: 0th and 2nd person both
+know 1. Therefore, 1 is the celebrity. 
+
+Example 2:
+
+Input:
+N = 2
+M[][] = {{0 1},
+         {1 0}}
+Output: -1
+Explanation: The two people at the party both
+know each other. None of them is a celebrity.
+
+Your Task:
+You don't need to read input or print anything. Complete the function celebrity() which takes the matrix M and its size N as input parameters and returns the index of the celebrity. If no such celebrity is present, return -1.
+
+
+Expected Time Complexity: O(N)
+Expected Auxiliary Space: O(1)
+
+
+Constraints:
+2 <= N <= 3000
+0 <= M[][] <= 1'''
+
+
+class Solution:
+    def know(self, a, b, M):
+        return M[a][b]
+    #Function to find if there is a celebrity in the party or not.
+    def celebrity(self, M, n):
+        # code here 
+        st =[]
+        for i in range(n):
+            st.append(i)
+            
+        count = 0
+        while count < n-1:
+            first = st.pop()
+            second = st.pop()
+            
+            if self.know(first, second, M):
+                st.append(second)
+            else:
+                st.append(first)
+                
+            count += 1
+        if st == []:
+            return -1
+        celeb = st.pop()  
+        
+        for i in range(n):
+            if i != celeb and (self.know(celeb, i, M) or self.know(i, celeb, M) != True):
+                return -1
+    
+        return celeb
+
+'''For Input:
+3
+0 1 0 0 0 0 0 1 0
+
+Your Output is: 
+1'''
+
+#https://www.geeksforgeeks.org/the-celebrity-problem/
+
+'''Reverse Words in a String
+Medium
+
+1965
+
+3393
+
+Add to List
+
+Share
+Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+ 
+
+Example 1:
+
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+Example 2:
+
+Input: s = "  hello world  "
+Output: "world hello"
+Explanation: Your reversed string should not contain leading or trailing spaces.
+Example 3:
+
+Input: s = "a good   example"
+Output: "example good a"
+Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+Example 4:
+
+Input: s = "  Bob    Loves  Alice   "
+Output: "Alice Loves Bob"
+Example 5:
+
+Input: s = "Alice does not even like bob"
+Output: "bob like even not does Alice"
+ 
+
+Constraints:
+
+1 <= s.length <= 104
+s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+There is at least one word in s.
+ 
+
+Follow-up: If the string data type is mutable in your language, can you solve it in-place with O(1) extra space?'''
+
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        res = ""
+        s = " "+s+ " "
+        start = -1
+        end = -1
+        for i in range(len(s)-2, 0, -1):
+            if s[i+1] == ' ' and s[i] != ' ':
+                end = i
+
+            if s[i-1] == ' ' and s[i] != ' ':
+                start = i
+                res = res + " " + s[start:end+1]
+
+        return res[1:]
+
+'''Your input
+"the sky is blue"
+Output
+"blue is sky the"
+Expected
+"blue is sky the"'''
+
+'''Longest Palindromic Substring
+Medium
+
+12769
+
+772
+
+Add to List
+
+Share
+Given a string s, return the longest palindromic substring in s.
+
+ 
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+Example 3:
+
+Input: s = "a"
+Output: "a"
+Example 4:
+
+Input: s = "ac"
+Output: "a"
+ 
+
+Constraints:
+
+1 <= s.length <= 1000
+s consist of only digits and English letters.'''
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        res = ""
+        for i in range(len(s)):
+            tmp = self.helpher(s, i, i)
+            if len(tmp) > len(res):
+                res = tmp
+                
+            tmp = self.helpher(s, i, i+1)
+            if len(tmp) > len(res):
+                res = tmp
+                
+        return res
+    def helpher(self, s, l, r):
+        while l >= 0 and r < len(s) and s[l] == s[r]:
+            l-=1
+            r+=1
+        
+        return s[l+1:r]
+
+'''Your input
+"babad"
+Output
+"bab"
+Expected
+"bab"'''
+
+#or
+
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        longestPalSub = ''
+        for i in range(len(s)):
+            center = self.expandAroundCenter(s, i, i)
+            inBetween = self.expandAroundCenter(s, i, i+1)
+            longestPalSub = max(longestPalSub, center, inBetween, key = len)
+        return longestPalSub
+    
+    def expandAroundCenter(self, s, left, right):
+        while left >= 0 and right < len(s) and s[left] == s[right]:
+            left -= 1
+            right += 1
+        return s[left + 1 : right]
+
+'''13. Roman to Integer
+Easy
+
+1506
+
+119
+
+Add to List
+
+Share
+Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.
+
+Symbol       Value
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+For example, 2 is written as II in Roman numeral, just two one's added together. 12 is written as XII, which is simply X + II. The number 27 is written as XXVII, which is XX + V + II.
+
+Roman numerals are usually written largest to smallest from left to right. However, the numeral for four is not IIII. Instead, the number four is written as IV. Because the one is before the five we subtract it making four. The same principle applies to the number nine, which is written as IX. There are six instances where subtraction is used:
+
+I can be placed before V (5) and X (10) to make 4 and 9. 
+X can be placed before L (50) and C (100) to make 40 and 90. 
+C can be placed before D (500) and M (1000) to make 400 and 900.
+Given a roman numeral, convert it to an integer.
+
+ 
+
+Example 1:
+
+Input: s = "III"
+Output: 3
+Example 2:
+
+Input: s = "IV"
+Output: 4
+Example 3:
+
+Input: s = "IX"
+Output: 9
+Example 4:
+
+Input: s = "LVIII"
+Output: 58
+Explanation: L = 50, V= 5, III = 3.
+Example 5:
+
+Input: s = "MCMXCIV"
+Output: 1994
+Explanation: M = 1000, CM = 900, XC = 90 and IV = 4.
+ 
+
+Constraints:
+
+1 <= s.length <= 15
+s contains only the characters ('I', 'V', 'X', 'L', 'C', 'D', 'M').
+It is guaranteed that s is a valid roman numeral in the range [1, 3999].'''
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        roman = {'I': 1, 'V':5,'X':10, 'L':50, 'C':100,'D':500,'M':1000}
+        
+        res = 0
+        prev = ''
+        for i in s:
+            res += roman[i]
+            if (prev == 'I') and (i == 'V' or i == 'X'):
+                res-=2
+            elif (prev == 'X') and (i == 'L' or i == 'C'):
+                res-=20
+            elif (prev == 'C') and (i == 'D' or i == 'M'):
+                res-=200
+            prev = i
+        return res
+
+'''Your input
+"III"
+Output
+3
+Expected
+3'''
+
+#OR
+
+class Solution:
+    def romanToInt(self, s: str) -> int:
+        dict = {'I':1, 
+                'V': 5,
+                'X' :10,
+                'L' :50,
+                'C': 100,
+                'D': 500,
+                'M': 1000}
+        
+        number = 0
+        s = s.replace("IV", "IIII").replace("IX", "VIIII")
+        s = s.replace("XL", "XXXX").replace("XC", "LXXXX")
+        s = s.replace("CD", "CCCC").replace("CM", "DCCCC")
+        for i in s:
+            number += dict[i]
+            
+        return number
+
+'''Implement Atoi 
+Medium Accuracy: 32.9% Submissions: 77054 Points: 4
+Your task  is to implement the function atoi. The function takes a string(str) as argument and converts it to an integer and returns it.
+
+Note: You are not allowed to use inbuilt function.
+
+Example 1:
+
+Input:
+str = 123
+Output: 123
+Example 2:
+
+Input:
+str = 21a
+Output: -1
+Explanation: Output is -1 as all
+characters are not digit only.
+Your Task:
+Complete the function atoi() which takes a string as input parameter and returns integer value of it. if the input string is not a numerical string then returns -1.
+
+Expected Time Complexity: O(|S|), |S| = length of string str.
+Expected Auxiliary Space: O(1)
+'''
+
+def isnumeric(self, x):
+        if (x >= '0' and  x <= '9'):
+            return True
+        return False
+        
+def atoi(self,string):
+    # Code here
+    res = 0
+    sign = 1
+    i = 0
+    
+    if string[0] == '-':
+        sign = -1
+        i+=1
+        
+    for j in range(i, len(string)):
+        
+        if self.isnumeric(string[j]) == False:
+            return -1
+        
+        res = res * 10 + (ord(string[j]) - ord('0'))
+        
+    return sign * res
+
+'''For Input:
+123
+
+Your Output is: 
+123'''
+
+#https://www.geeksforgeeks.org/write-your-own-atoi/
+
+'''Longest Common Prefix
+Easy
+
+5126
+
+2425
+
+Add to List
+
+Share
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+ 
+
+Example 1:
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+ 
+
+Constraints:
+
+1 <= strs.length <= 200
+0 <= strs[i].length <= 200
+strs[i] consists of only lower-case English letters.'''
+
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        if not strs: return ''
+        
+        m = min(strs)
+        M = max(strs)
+        i = 0
+        for i in range(min(len(m),len(M))):
+            if m[i] != M[i]: break
+        else: i += 1
+        return m[:i]
+
+'''Your input
+["flower","flow","flight"]
+Output
+"fl"
+Expected
+"fl"'''
+
+#https://leetcode.com/problems/longest-common-prefix/discuss/?currentPage=1&orderBy=most_votes&query=
+
+'''Repeated String Match
+Medium
+
+1139
+
+861
+
+Add to List
+
+Share
+Given two strings a and b, return the minimum number of times you should repeat string a so that string b is a substring of it. If it is impossible for b​​​​​​ to be a substring of a after repeating it, return -1.
+
+Notice: string "abc" repeated 0 times is "",  repeated 1 time is "abc" and repeated 2 times is "abcabc".
+
+ 
+
+Example 1:
+
+Input: a = "abcd", b = "cdabcdab"
+Output: 3
+Explanation: We return 3 because by repeating a three times "abcdabcdabcd", b is a substring of it.
+Example 2:
+
+Input: a = "a", b = "aa"
+Output: 2
+Example 3:
+
+Input: a = "a", b = "a"
+Output: 1
+Example 4:
+
+Input: a = "abc", b = "wxyz"
+Output: -1
+ 
+
+Constraints:
+
+1 <= a.length <= 104
+1 <= b.length <= 104
+a and b consist of lower-case English letters.'''
+
+class Solution:
+    def repeatedStringMatch(self, a: str, b: str) -> int:
+        res = ''
+        cnt = 0
+        while len(res) < len(b):
+            res += a
+            cnt += 1
+            if b in res:
+                return cnt
+        res += a
+        if b in res:
+            return cnt+1
+        return -1
+
+'''Your input
+"abcd"
+"cdabcdab"
+Output
+3
+Expected
+3'''
+
+#https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
+
+'''KMP Algorithm for Pattern Searching'''
+
+def KMPSearch(pat, txt):
+    M = len(pat)
+    N = len(txt)
+  
+    # create lps[] that will hold the longest prefix suffix 
+    # values for pattern
+    lps = [0]*M
+    j = 0 # index for pat[]
+  
+    # Preprocess the pattern (calculate lps[] array)
+    computeLPSArray(pat, M, lps)
+  
+    i = 0 # index for txt[]
+    while i < N:
+        if pat[j] == txt[i]:
+            i += 1
+            j += 1
+  
+        if j == M:
+            print ("Found pattern at index " + str(i-j))
+            j = lps[j-1]
+  
+        # mismatch after j matches
+        elif i < N and pat[j] != txt[i]:
+            # Do not match lps[0..lps[j-1]] characters,
+            # they will match anyway
+            if j != 0:
+                j = lps[j-1]
+            else:
+                i += 1
+  
+def computeLPSArray(pat, M, lps):
+    len = 0 # length of the previous longest prefix suffix
+  
+    lps[0] # lps[0] is always 0
+    i = 1
+  
+    # the loop calculates lps[i] for i = 1 to M-1
+    while i < M:
+        if pat[i]== pat[len]:
+            len += 1
+            lps[i] = len
+            i += 1
+        else:
+            # This is tricky. Consider the example.
+            # AAACAAAA and i = 7. The idea is similar 
+            # to search step.
+            if len != 0:
+                len = lps[len-1]
+  
+                # Also, note that we do not increment i here
+            else:
+                lps[i] = 0
+                i += 1
+  
+txt = "ABABDABACDABABCABAB"
+pat = "ABABCABAB"
+KMPSearch(pat, txt)
+
+'''Minimum characters to be added at front to make string palindrome
+Difficulty Level : Hard
+Last Updated : 08 Mar, 2021
+Given a string str we need to tell minimum characters to be added at front of string to make string palindrome.'''
+
+
+#Found pattern at index 10
+
+# Python3 program for getting minimum
+# character to be added at the front
+# to make string palindrome
+ 
+# Returns vector lps for given string str
+def computeLPSArray(string):
+ 
+    M = len(string)
+    lps = [None] * M
+ 
+    length = 0
+    lps[0] = 0 # lps[0] is always 0
+ 
+    # the loop calculates lps[i]
+    # for i = 1 to M-1
+    i = 1
+    while i < M:
+     
+        if string[i] == string[length]:
+         
+            length += 1
+            lps[i] = length
+            i += 1
+         
+        else: # (str[i] != str[len])
+         
+            # This is tricky. Consider the example.
+            # AAACAAAA and i = 7. The idea is
+            # similar to search step.
+            if length != 0:
+             
+                length = lps[length - 1]
+ 
+                # Also, note that we do not
+                # increment i here
+             
+            else: # if (len == 0)
+             
+                lps[i] = 0
+                i += 1
+ 
+    return lps
+ 
+# Method returns minimum character
+# to be added at front to make
+# string palindrome
+def getMinCharToAddedToMakeStringPalin(string):
+ 
+    revStr = string[::-1]
+ 
+    # Get concatenation of string,
+    # special character and reverse string
+    concat = string + "$" + revStr
+ 
+    # Get LPS array of this
+    # concatenated string
+    lps = computeLPSArray(concat)
+ 
+    # By subtracting last entry of lps
+    # vector from string length, we
+    # will get our result
+    return len(string) - lps[-1]
+ 
+# Driver Code
+if __name__ == "__main__":
+ 
+    string = "AACECAAAA"
+    print(getMinCharToAddedToMakeStringPalin(string))
+#2
+
+'''Anagram 
+Easy Accuracy: 50.99% Submissions: 45235 Points: 2
+Given two strings a and b consisting of lowercase characters. The task is to check whether two given strings are an anagram of each other or not. An anagram of a string is another string that contains the same characters, only the order of characters can be different. For example, “act” and “tac” are an anagram of each other.
+
+Example 1:
+
+Input:
+a = geeksforgeeks, b = forgeeksgeeks
+Output: YES
+Explanation: Both the string have same
+characters with same frequency. So, 
+both are anagrams.
+Example 2:
+
+Input:
+a = allergy, b = allergic
+Output: NO
+Explanation:Characters in both the strings
+are not same, so they are not anagrams.
+Your Task:
+You don't need to read input or print anything.Your task is to complete the function isAnagram() which takes the string a and string b as input parameter and check if the two strings are an anagram of each other. The function returns true if the strings are anagram else it returns false.
+
+Expected Time Complexity: O(|a|+|b|).
+Expected Auxiliary Space: O(Number of distinct characters).
+
+Note: |s| represents the length of string s.
+
+Constraints:
+1 ≤ |a|,|b| ≤ 105'''
+
+class Solution:
+    
+    #Function is to check whether two strings are anagram of each other or not.
+    def isAnagram(self,a,b):
+        #code here
+        
+        n1 = len(a)
+        n2 = len(b)
+        
+        temp = ''
+        
+        if n1 != n2:
+            return False
+            
+        temp = a+a
+        
+        if temp.count(b) > 0:
+            return True
+            
+        else:
+            return False
+
+'''For Input:
+geeksforgeeks forgeeksgeeks
+
+Your Output is: 
+YES'''
+
+#OR
+
+# Python program to check whether two strings are
+# anagrams of each other
+ 
+# function to check whether two strings are anagram
+# of each other
+ 
+ 
+def areAnagram(str1, str2):
+    # Get lengths of both strings
+    n1 = len(str1)
+    n2 = len(str2)
+ 
+    # If lenght of both strings is not same, then
+    # they cannot be anagram
+    if n1 != n2:
+        return 0
+ 
+    # Sort both strings
+    str1 = sorted(str1)
+    str2 = sorted(str2)
+ 
+    # Compare sorted strings
+    for i in range(0, n1):
+        if str1[i] != str2[i]:
+            return 0
+ 
+    return 1
+ 
+ 
+# Driver code
+str1 = "test"
+str2 = "ttew"
+ 
+# Function Call
+if areAnagram(str1, str2):
+    print("The two strings are anagram of each other")
+else:
+    print("The two strings are not anagram of each other")
+
+
+'''Count and Say
+Medium
+
+742
+
+2199
+
+Add to List
+
+Share
+The count-and-say sequence is a sequence of digit strings defined by the recursive formula:
+
+countAndSay(1) = "1"
+countAndSay(n) is the way you would "say" the digit string from countAndSay(n-1), which is then converted into a different digit string.
+To determine how you "say" a digit string, split it into the minimal number of groups so that each group is a contiguous section all of the same character. Then for each group, say the number of characters, then say the character. To convert the saying into a digit string, replace the counts with a number and concatenate every saying.
+
+For example, the saying and conversion for digit string "3322251":
+
+
+Given a positive integer n, return the nth term of the count-and-say sequence.
+
+ 
+
+Example 1:
+
+Input: n = 1
+Output: "1"
+Explanation: This is the base case.
+Example 2:
+
+Input: n = 4
+Output: "1211"
+Explanation:
+countAndSay(1) = "1"
+countAndSay(2) = say "1" = one 1 = "11"
+countAndSay(3) = say "11" = two 1's = "21"
+countAndSay(4) = say "21" = one 2 + one 1 = "12" + "11" = "1211"'''
+
+class Solution:
+    def countAndSay(self, n):
+        s = '1'
+        for _ in range(n-1):
+            let, temp, count = s[0], '', 0
+            for l in s:
+                if let == l:
+                    count += 1
+                else:
+                    temp += str(count)+let
+                    let = l
+                    count = 1
+            temp += str(count)+let
+            s = temp
+        return s
+        
+'''Your input
+1
+Output
+"1"
+Expected
+"1"'''
+
+'''Compare Version Numbers
+Medium
+
+897
+
+1764
+
+Add to List
+
+Share
+Given two version numbers, version1 and version2, compare them.
+
+Version numbers consist of one or more revisions joined by a dot '.'. Each revision consists of digits and may contain leading zeros. Every revision contains at least one character. Revisions are 0-indexed from left to right, with the leftmost revision being revision 0, the next revision being revision 1, and so on. For example 2.5.33 and 0.1 are valid version numbers.
+
+To compare version numbers, compare their revisions in left-to-right order. Revisions are compared using their integer value ignoring any leading zeros. This means that revisions 1 and 001 are considered equal. If a version number does not specify a revision at an index, then treat the revision as 0. For example, version 1.0 is less than version 1.1 because their revision 0s are the same, but their revision 1s are 0 and 1 respectively, and 0 < 1.
+
+Return the following:
+
+If version1 < version2, return -1.
+If version1 > version2, return 1.
+Otherwise, return 0.
+ 
+
+Example 1:
+
+Input: version1 = "1.01", version2 = "1.001"
+Output: 0
+Explanation: Ignoring leading zeroes, both "01" and "001" represent the same integer "1".
+Example 2:
+
+Input: version1 = "1.0", version2 = "1.0.0"
+Output: 0
+Explanation: version1 does not specify revision 2, which means it is treated as "0".
+Example 3:
+
+Input: version1 = "0.1", version2 = "1.1"
+Output: -1
+Explanation: version1's revision 0 is "0", while version2's revision 0 is "1". 0 < 1, so version1 < version2.
+Example 4:
+
+Input: version1 = "1.0.1", version2 = "1"
+Output: 1
+Example 5:
+
+Input: version1 = "7.5.2.4", version2 = "7.5.3"
+Output: -1
+ 
+
+Constraints:
+
+1 <= version1.length, version2.length <= 500
+version1 and version2 only contain digits and '.'.
+version1 and version2 are valid version numbers.
+All the given revisions in version1 and version2 can be stored in a 32-bit integer.'''
+
+class Solution:
+    def compareVersion(self, version1: str, version2: str) -> int:
+        v1 = version1.split('.')
+        v2 = version2.split('.')
+        
+        while v1 or v2:
+            v1val = 0
+            v2val = 0
+            
+            if v1:
+                v1val = int(v1.pop(0))
+                
+            if v2:
+                v2val = int(v2.pop(0))
+                
+            if v1val > v2val:
+                return 1
+            if v2val > v1val:
+                return -1
+            
+        return 0
+
+'''Place k elements such that minimum distance is maximized
+Difficulty Level : Medium
+Last Updated : 05 Jul, 2021
+Given an array representing n positions along a straight line. Find k (where k <= n) elements from the array such that the minimum distance between any two (consecutive points among the k points) is maximized.
+
+Examples :  
+
+Input : arr[] = {1, 2, 8, 4, 9}
+            k = 3
+Output : 3
+Largest minimum distance = 3
+3 elements arranged at positions 1, 4 and 8, 
+Resulting in a minimum distance of 3
+
+Input  : arr[] = {1, 2, 7, 5, 11, 12}
+             k = 3
+Output : 5
+Largest minimum distance = 5
+3 elements arranged at positions 1, 7 and 12, 
+resulting in a minimum distance of 5 (between
+7 and 12)
+'''
+
+# Python 3 program to find largest minimum
+# distance among k points.
+ 
+# Returns true if it is possible to arrange
+# k elements of arr[0..n-1] with minimum
+# distance given as mid.
+ 
+ 
+def isFeasible(mid, arr, n, k):
+ 
+    # Place first element at arr[0] position
+    pos = arr[0]
+ 
+    # Initialize count of elements placed.
+    elements = 1
+ 
+    # Try placing k elements with minimum
+    # distance mid.
+    for i in range(1, n, 1):
+        if (arr[i] - pos >= mid):
+ 
+            # Place next element if its distance
+            # from the previously placed element
+            # is greater than current mid
+            pos = arr[i]
+            elements += 1
+ 
+            # Return if all elements are placed
+            # successfully
+            if (elements == k):
+                return True
+    return 0
+ 
+# Returns largest minimum distance for k elements
+# in arr[0..n-1]. If elements can't be placed,
+# returns -1.
+ 
+ 
+def largestMinDist(arr, n, k):
+ 
+    # Sort the positions
+    arr.sort(reverse=False)
+ 
+    # Initialize result.
+    res = -1
+ 
+    # Consider the maximum possible distance
+    left = arr[0]
+    right = arr[n - 1] - arr[0]
+ 
+    # left is initialized with 1 and not with arr[0]
+    # because, minimum distance between each element
+    # can be one and not arr[0]. consider this example:
+    # arr[] = {9,12} and you have to place 2 element
+    # then left = arr[0] will force the function to
+    # look the answer between range arr[0] to arr[n-1],
+    # i.e 9 to 12, but the answer is 3 so It is required
+    # that you initialize the left with 1
+ 
+    # Do binary search for largest
+    # minimum distance
+    while (left < right):
+        mid = (left + right) / 2
+ 
+        # If it is possible to place k elements
+        # with minimum distance mid, search for
+        # higher distance.
+        if (isFeasible(mid, arr, n, k)):
+ 
+            # Change value of variable max to mid iff
+            # all elements can be successfully placed
+            res = max(res, mid)
+            left = mid + 1
+ 
+        # If not possible to place k elements,
+        # search for lower distance
+        else:
+            right = mid
+ 
+    return res
+ 
+ 
+# Driver code
+if __name__ == '__main__':
+    arr = [1, 2, 8, 4, 9]
+    n = len(arr)
+    k = 3
+    print(largestMinDist(arr, n, k))
+ 
+
+'''Word Boggle 
+Medium Accuracy: 48.98% Submissions: 15861 Points: 4
+Given a dictionary of distinct words and an M x N board where every cell has one character. Find all possible words from the dictionary that can be formed by a sequence of adjacent characters on the board. We can move to any of 8 adjacent characters, but a word should not have multiple instances of the same cell.
+
+
+Example 1:
+
+Input: 
+N = 1
+dictionary = {"CAT"}
+R = 3, C = 3
+board = {{C,A,P},{A,N,D},{T,I,E}}
+Output:
+CAT
+Explanation: 
+C A P
+A N D
+T I E
+Words we got is denoted using same color.
+Example 2:
+
+Input:
+N = 4
+dictionary = {"GEEKS","FOR","QUIZ","GO"}
+R = 3, C = 3 
+board = {{G,I,Z},{U,E,K},{Q,S,E}}
+Output:
+GEEKS QUIZ
+Explanation: 
+G I Z
+U E K
+Q S E 
+Words we got is denoted using same color.
+
+Your task:
+You don’t need to read input or print anything. Your task is to complete the function wordBoggle() which takes the dictionary contaning N space-separated strings and R*C board as input parameters and returns a list of words that exist on the board in lexicographical order.
+
+
+Expected Time Complexity: O(N*W + R*C^2)
+Expected Auxiliary Space: O(N*W + R*C)
+
+
+Constraints:
+1 ≤ N ≤ 15
+1 ≤ R, C ≤ 50
+1 ≤ length of Word ≤ 60
+Each word can consist of both lowercase and uppercase letters.'''
+
+class Solution:
+    def searchBoggle(self,board, words, processed, i, j,M,N, path=""):
+ 
+        # mark the current node as processed
+        processed[i][j] = True
+     
+        # update the path with the current character and insert it into the set
+        path = path + board[i][j]
+        words.add(path)
+     
+        # check for all eight possible movements from the current cell
+        for k in range(8):
+            row = [-1, -1, -1, 0, 1, 0, 1, 1]
+            col = [-1, 1, 0, -1, -1, 1, 0, 1]
+            # skip if a cell is invalid, or it is already processed
+            ni = i + row[k]
+            nj = j + col[k]
+            if ni >= 0 and nj >= 0 and ni < M and nj < N and processed[ni][nj] == False:
+                self.searchBoggle(board, words, processed, ni, nj,M,N, path)
+     
+        # backtrack: mark the current node as unprocessed
+        processed[i][j] = False
+     
+ 
+# Function to search for a given set of words in a boggle
+    def wordBoggle(self,board, input):
+        M = len(board)
+        N = len(board[0])
+        # construct a matrix to store whether a cell is processed or not
+        processed = [[False for x in range(N)] for y in range(M)]
+     
+        # construct a set to store all possible words constructed from the matrix
+        words = set()
+     
+        # generate all possible words in a boggle
+        for i in range(M):
+            for j in range(N):
+                # consider each character as a starting point and run DFS
+                self.searchBoggle(board, words, processed, i, j,M,N)
+     
+        # for each word in the input list, check whether it is present in the set
+        return ([word for word in input if word in words])
+
+'''['QUIZ', 'GEEKS']'''
+
+'''Maximum Profit in Job Scheduling
+Hard
+
+1763
+
+19
+
+Add to List
+
+Share
+We have n jobs, where every job is scheduled to be done from startTime[i] to endTime[i], obtaining a profit of profit[i].
+
+You're given the startTime, endTime and profit arrays, return the maximum profit you can take such that there are no two jobs in the subset with overlapping time range.
+
+If you choose a job that ends at time X you will be able to start another job that starts at time X.
+
+Example 1:
+
+Input: startTime = [1,2,3,3], endTime = [3,4,5,6], profit = [50,10,40,70]
+Output: 120
+Explanation: The subset chosen is the first and fourth job. 
+Time range [1-3]+[3-6] , we get profit of 120 = 50 + 70.
+Example 2:
+
+Input: startTime = [1,2,3,4,6], endTime = [3,5,10,6,9], profit = [20,20,100,70,60]
+Output: 150
+Explanation: The subset chosen is the first, fourth and fifth job. 
+Profit obtained 150 = 20 + 70 + 60.
+Example 3:
+
+Input: startTime = [1,1,1], endTime = [2,3,4], profit = [5,6,4]
+Output: 6
+ 
+
+Constraints:
+
+1 <= startTime.length == endTime.length == profit.length <= 5 * 104
+1 <= startTime[i] < endTime[i] <= 109
+1 <= profit[i] <= 104'''
+
+class Solution:
+    def jobScheduling(self, startTime: List[int], endTime: List[int], profit: List[int]) -> int:
+        n = len(startTime)
+        
+        jobs = []
+        for i in range(n):
+            jobs.append([startTime[i], endTime[i], profit[i]])
+            
+        jobs.sort(key = lambda x : x[1])
+        
+        dp = [0] * n
+        dp[0] = jobs[0][2]
+        
+        for i in range(1,n):
+            inc = jobs[i][2]
+            l = self.binary(jobs,i)
+            if l != -1:
+                inc += dp[l]
+            dp[i] = max(inc, dp[i-1])
+        
+        return dp[n-1]
+    
+    def binary(self, jobs, i):
+        low = 0
+        high = i-1
+        while low <= high:
+            mid = (low + high)//2
+            
+            if jobs[mid][1] <= jobs[i][0]:
+                if jobs[mid+1][1] <= jobs[i][0]:
+                    low = mid + 1
+                else:
+                    return mid
+            else:
+                high = mid - 1
+                
+        return -1
+
+'''Your input
+[1,2,3,3]
+[3,4,5,6]
+[50,10,40,70]
+Output
+120
+Expected
+120'''
+
+#OR
+
+class Solution(object):
+    def jobScheduling(self, startTime, endTime, profit):
+        """
+        :type startTime: List[int]
+        :type endTime: List[int]
+        :type profit: List[int]
+        :rtype: int
+        """
+        # O(nlog(n))
+        lst = sorted(zip(startTime, endTime, profit), key = lambda x: x[1])
+        dpEndTime = [0]
+        dpProfit = [0]
+        
+        for start, end, pro in lst:
+            # find rightMost idx to insert this start time
+            # idx is where this new start needs to be inserted
+            # idx - 1 is the one that doesn't overlap
+            idx = self.bSearch(dpEndTime, start)
+            lastProfit = dpProfit[-1]
+            currProfit = dpProfit[idx-1] + pro # they don't overlap
+            
+            # whener we find currProfit greater than last, we update
+            if currProfit > lastProfit:
+                dpEndTime.append(end)
+                dpProfit.append(currProfit)
+        
+        return dpProfit[-1]
+            
+    
+    def bSearch(self, dp, target):
+        left, right = 0, len(dp)
+        
+        while left < right:
+            mid = (left + right)/2
+            
+            if dp[mid] <= target:
+                left = mid + 1
+            else:
+                right = mid
+        
+        return left
+
+'''Palindrome Partitioning II
+Hard
+
+2505
+
+68
+
+Add to List
+
+Share
+Given a string s, partition s such that every substring of the partition is a palindrome.
+
+Return the minimum cuts needed for a palindrome partitioning of s.
+
+ 
+
+Example 1:
+
+Input: s = "aab"
+Output: 1
+Explanation: The palindrome partitioning ["aa","b"] could be produced using 1 cut.
+Example 2:
+
+Input: s = "a"
+Output: 0
+Example 3:
+
+Input: s = "ab"
+Output: 1
+ 
+
+Constraints:
+
+1 <= s.length <= 2000
+s consists of lower-case English letters only.'''
+
+class Solution:
+    def minCut(self, s: str) -> int:
+        # acceleration
+        if s == s[::-1]: return 0
+        for i in range(1, len(s)):
+            if s[:i] == s[:i][::-1] and s[i:] == s[i:][::-1]:
+                return 1
+        # algorithm
+        cut = [x for x in range(-1,len(s))]  # cut numbers in worst case (no palindrome)
+        for i in range(len(s)):
+            r1, r2 = 0, 0
+            # use i as origin, and gradually enlarge radius if a palindrome exists
+            # odd palindrome
+            while i-r1 >= 0 and i+r1 < len(s) and s[i-r1] == s[i+r1]:
+                cut[i+r1+1] = min(cut[i+r1+1], cut[i-r1]+1)
+                r1 += 1
+            # even palindrome
+            while i-r2 >= 0 and i+r2+1 < len(s) and s[i-r2] == s[i+r2+1]:
+                cut[i+r2+2] = min(cut[i+r2+2], cut[i-r2]+1)
+                r2 += 1
+        return cut[-1]
+
+'''Your input
+"aab"
+Output
+1
+Expected
+1'''
+
+'''Egg Dropping Puzzle 
+Medium Accuracy: 54.38% Submissions: 24069 Points: 4
+You are given N identical eggs and you have access to a K-floored building from 1 to K.
+
+There exists a floor f where 0 <= f <= K such that any egg dropped at a floor higher than f will break, and any egg dropped at or below floor f will not break. There are few rules given below. 
+
+An egg that survives a fall can be used again.
+A broken egg must be discarded.
+The effect of a fall is the same for all eggs.
+If the egg doesn't break at a certain floor, it will not break at any floor below.
+If the eggs breaks at a certain floor, it will break at any floor above.
+Return the minimum number of moves that you need to determine with certainty what the value of f is.
+
+For more description on this problem see wiki page
+
+Example 1:
+
+Input:
+N = 1, K = 2
+Output: 2
+Explanation: 
+1. Drop the egg from floor 1. If it 
+   breaks, we know that f = 0.
+2. Otherwise, drop the egg from floor 2.
+   If it breaks, we know that f = 1.
+3. If it does not break, then we know f = 2.
+4. Hence, we need at minimum 2 moves to
+   determine with certainty what the value of f is.
+Example 2:
+
+Input:
+N = 2, K = 10
+Output: 4
+Your Task:
+Complete the function eggDrop() which takes two positive integer N and K as input parameters and returns the minimum number of attempts you need in order to find the critical floor.
+
+Expected Time Complexity : O(N*K)
+Expected Auxiliary Space: O(N*K)
+
+Constraints:
+1<=N<=200
+1<=K<=200'''
+
+def eggDrop(self,n, k):
+    # code here
+    if k == 0 or k ==1:
+        return k
+    
+    if n == 1:
+        return k
+        
+    min = float('inf')
+    for i in range(1, k+1):
+        res = max(self.eggDrop(n-1, i-1), self.eggDrop(n, k-i))
+        
+        if res < min:
+            min = res
+            
+    return min+1
+
+'''Cutting a Rod | DP-13
+Difficulty Level : Medium
+Last Updated : 10 Aug, 2021
+ 
+Given a rod of length n inches and an array of prices that includes prices of all pieces of size smaller than n. Determine the maximum value obtainable by cutting up the rod and selling the pieces. For example, if the length of the rod is 8 and the values of different pieces are given as the following, then the maximum obtainable value is 22 (by cutting in two pieces of lengths 2 and 6) 
+
+length   | 1   2   3   4   5   6   7   8  
+--------------------------------------------
+price    | 1   5   8   9  10  17  17  20'''
+
+
+# A Dynamic Programming solution for Rod cutting problem
+INT_MIN = -32767
+ 
+# Returns the best obtainable price for a rod of length n and
+# price[] as prices of different pieces
+def cutRod(price, n):
+    val = [0 for x in range(n+1)]
+    val[0] = 0
+ 
+    # Build the table val[] in bottom up manner and return
+    # the last entry from the table
+    for i in range(1, n+1):
+        max_val = INT_MIN
+        for j in range(i):
+             max_val = max(max_val, price[j] + val[i-j-1])
+        val[i] = max_val
+ 
+    return val[n]
+
+
+"""
+Given an array arr[] of size N, check if it can be partitioned into two parts such that the sum of elements in both parts is the same.
+Example 1:
+Input: N = 4
+arr = {1, 5, 11, 5}
+Output: YES
+Explaination: 
+The two parts are {1, 5, 5} and {11}.
+"""
+def equalPartition(self, n, arr):
+    # code here
+    s = sum(arr)
+    if s%2 != 0:
+        return 0
+    else:
+        target = s//2
+        dp = [[False for i in range(target + 1)]for i in range(n+1)]
+        
+        for i in range(n+1):
+            for j in range(target+1):
+                if i == 0:
+                    dp[i][j] = False
+                if j == 0:
+                    dp[i][j] = True
+                else:
+                    if j >= arr[i-1]:
+                        dp[i][j] = dp[i-1][j] or dp[i-1][j-arr[i-1]]
+                    else:
+                        dp[i][j] = dp[i-1][j]
+        return int(dp[n][target])
+"""
+TC = o(n*s)
+SC = o(n*s)
+"""
+
+"""
+You are given coins of different denominations and a total amount of money amount.
+Write a function to compute the fewest number of coins that you need to make up that amount.
+If that amount of money cannot be made up by any combination of the coins, return -1.
+You may assume that you have an infinite number of each kind of coin.
+ 
+Example 1:
+Input: coins = [1,2,5], amount = 11
+Output: 3
+Explanation: 11 = 5 + 5 + 1
+"""
+def coinChange(self, arr, s: int) -> int:
+    n = len(arr)
+    dp = [[0 for i in range(s+1)]for i in range(n+1)]
+    for i in range(s+1):
+        dp[0][i] = float("inf") # Because with 0 coins you can not make any number
+    for i in range(1,s+1):
+        if i%arr[0]==0:
+            dp[1][i] = i//arr[0] # With 1 coin you either can divide with it or not
+        else:
+            dp[1][i] = float('inf')
+    for i in range(2,n+1):
+        for j in range(1,s+1):
+            if j >= arr[i-1]:
+                dp[i][j] = min(dp[i-1][j],1+dp[i][j-arr[i-1]]) # To calculate min. number
+            else:
+                dp[i][j] = dp[i-1][j]
+    if dp[n][s] == float('inf'):
+        return -1
+    return dp[n][s]
+"""
+TC = o(n*s)
+SC = o(n*s)
+"""
+
+"""
+Given an n*m matrix, the task is to find the maximum sum of elements of cells starting from the cell (0, 0) to cell (n-1, m-1). 
+However, the allowed moves are right, downwards or diagonally right, i.e, from location (i, j) next move can be (i+1, j), or, (i, j+1), or (i+1, j+1). Find the maximum sum of elements satisfying the allowed moves.
+Examples: 
+Input:
+mat[][] = {{100, -350, -200},
+           {-100, -300, 700}}
+Output: 500
+Explanation: 
+Path followed is 100 -> -300 -> 700
+"""
+def maximum_path_sum(mat,vis,dp,i,j):
+    n = len(mat)
+    m = len(mat[0])
+    if i == n-1 and j == m - 1:
+        dp[i][j] = mat[i][j]
+        return dp[i][j]
+    if vis[i][j]:
+        return dp[i][j]
+    vis[i][j] = 1
+    total_sum = dp[i][j]
+
+    if i < n-1 and j < m-1:
+        currentsum = max(maximum_path_sum(mat,vis,dp,i,j+1),maximum_path_sum(mat,vis,dp,i+1,j+1),maximum_path_sum(mat,vis,dp,i+1,j))
+        total_sum = currentsum + mat[i][j]
+        dp = total_sum
+    elif i == n-1:
+        total_sum = mat[i][j] + maximum_path_sum(mat,vis,dp,i,j+1)
+        dp[i][j] = total_sum
+    else:
+        total_sum = mat[i][j] + maximum_path_sum(mat,vis,dp,i+1,j)
+        dp[i][j] = total_sum
+    return total_sum
+"""
+TC = o(n*m)
+SC = o(n*m)
+"""
+
+
+'''Populating Next Right Pointers in Each Node
+Medium
+
+4038
+
+181
+
+Add to List
+
+Share
+You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
+ 
+
+Example 1:
+
+
+Input: root = [1,2,3,4,5,6,7]
+Output: [1,#,2,3,#,4,5,6,7,#]
+Explanation: Given the above perfect binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
+Example 2:
+
+Input: root = []
+Output: []
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 212 - 1].
+-1000 <= Node.val <= 1000
+ 
+
+Follow-up:
+
+You may only use constant extra space.
+The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem.'''
+
+class Solution(object):
+    def connect(self, root):
+        """
+        :type root: TreeLinkNode
+        :rtype: nothing
+        """
+        
+        if not root:
+            return None
+        cur  = root
+        next = root.left
+
+        while cur.left :
+            cur.left.next = cur.right
+            if cur.next:
+                cur.right.next = cur.next.left
+                cur = cur.next
+            else:
+                cur = next
+                next = cur.left
+
+
+#OR
+
+def connect1(self, root):
+    if root and root.left and root.right:
+        root.left.next = root.right
+        if root.next:
+            root.right.next = root.next.left
+        self.connect(root.left)
+        self.connect(root.right)
+ 
+# BFS       
+def connect2(self, root):
+    if not root:
+        return 
+    queue = [root]
+    while queue:
+        curr = queue.pop(0)
+        if curr.left and curr.right:
+            curr.left.next = curr.right
+            if curr.next:
+                curr.right.next = curr.next.left
+            queue.append(curr.left)
+            queue.append(curr.right)
+    
+# DFS 
+def connect(self, root):
+    if not root:
+        return 
+    stack = [root]
+    while stack:
+        curr = stack.pop()
+        if curr.left and curr.right:
+            curr.left.next = curr.right
+            if curr.next:
+                curr.right.next = curr.next.left
+            stack.append(curr.right)
+            stack.append(curr.left)
+
+
+'''A program to check if a binary tree is BST or not
+Difficulty Level : Medium
+Last Updated : 15 Jul, 2021
+A binary search tree (BST) is a node based binary tree data structure which has the following properties. 
+• The left subtree of a node contains only nodes with keys less than the node’s key. 
+• The right subtree of a node contains only nodes with keys greater than the node’s key. 
+• Both the left and right subtrees must also be binary search trees.
+From the above properties it naturally follows that: 
+• Each node (item in the tree) has a distinct key.
+
+'''
+
+
+INT_MAX = 4294967296
+INT_MIN = -4294967296
+ 
+# A binary tree node
+class Node:
+ 
+    # Constructor to create a new node
+    def __init__(self, data):
+        self.data = data
+        self.left = None
+        self.right = None
+ 
+ 
+# Returns true if the given tree is a binary search tree
+# (efficient version)
+def isBST(node):
+    return (isBSTUtil(node, INT_MIN, INT_MAX))
+ 
+# Retusn true if the given tree is a BST and its values
+# >= min and <= max
+def isBSTUtil(node, mini, maxi):
+     
+    # An empty tree is BST
+    if node is None:
+        return True
+ 
+    # False if this node violates min/max constraint
+    if node.data < mini or node.data > maxi:
+        return False
+ 
+    # Otherwise check the subtrees recursively
+    # tightening the min or max constraint
+    return (isBSTUtil(node.left, mini, node.data -1) and
+          isBSTUtil(node.right, node.data+1, maxi))
+ 
+# Driver program to test above function
+root = Node(4)
+root.left = Node(2)
+root.right = Node(5)
+root.left.left = Node(1)
+root.left.right = Node(3)
+ 
+if (isBST(root)):
+    print "Is BST"
+else:
+    print "Not a BST"
+
+''''''

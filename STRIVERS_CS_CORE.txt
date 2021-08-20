@@ -1,0 +1,350 @@
+								#Operating System:
+
+1. What is the main purpose of an operating system? Discuss different types? 
+An operating system has three main functions: 
+(1) manage the computer's resources, such as the central processing unit, memory, disk drives, and printers,
+(2) establish a user interface,and
+(3) execute and provide services for applications software.
+Memory Management.
+Processor Management.
+Device Management.
+File Management.
+Security.
+Control over system performance.
+Job accounting.
+Error detecting aids.
+
+2. What is a socket, kernel and monolithic kernel ? 
+Kernel is the core part of an operating system which manages system resources.
+It also acts like a bridge between application and hardware of the computer.
+It is one of the first programs loaded on start-up (after the Bootloader).
+
+The main difference between microkernel and monolithic kernel is that the microkernel-based systems have OS services and 
+kernel in separate address spaces while the monolithic kernel-based systems have OS services and kernel in the same address space. ... 
+Kernel is the core of the operating system.
+
+3. Difference between process and program and thread? Different types of process. 
+A process is an active program i.e. a program that is under execution. A process is a program under execution i.e an active program. ...
+A thread is a lightweight process that can be managed independently by a scheduler.
+
+A process, in the simplest terms, is an executing program.
+One or more threads run in the context of the process. A thread is the basic unit to which the operating system allocates processor time.
+A thread can execute any part of the process code, including parts currently being executed by another thread.
+
+4. Define virtual memory, thrashing, threads.
+Virtual memory is a feature of an operating system that enables a computer to be able to compensate shortages of physical memory by transferring pages of data from random access memory to disk storage.
+This means that when RAM runs low, virtual memory can move data from it to a space called a paging file.
+
+ thrashing occurs when a computer's virtual memory resources are overused,
+ leading to a constant state of paging and page faults, inhibiting most application-level processing. This causes the performance of the computer to degrade or collapse.
+This condition is referred to as thrashing.
+
+in os There are two types of threads to be managed in a modern system: User threads and kernel threads.
+ User threads are supported above the kernel, without kernel support. These are the threads that application programmers would put into their programs.
+ Kernel threads are supported within the kernel of the OS itself.
+
+5. What is RAID ? Different types. 
+
+RAID levels are defined by the combination of the techniques used; they also provide varying degrees of reliability (ability to withstand drive failure) and availability (speed of I/O). There are six basic RAID levels: RAID Level 0 stripes data across two or more drives. ... All data will be lost if one disk fails.
+
+6.What is a deadlock ? Different conditions to achieve a deadlock
+Deadlock in OS is a situation where two or more processes are blocked. 
+Conditions for Deadlock- Mutual Exclusion, Hold and Wait, No preemption, 
+Circular wait. These 4 conditions must hold simultaneously for the occurrence of deadlock.
+
+7. What is fragmentation? Types of fragmentation. 
+There are two types of fragmentation in OS which are given as: Internal fragmentation, and External fragmentation. Internal Fragmentation: Internal fragmentation happens when the memory is split into mounted sized blocks. Whenever a method request for the memory, the mounted sized block is allotted to the method.
+
+8. What is spooling ? 
+Spooling is a process in which data is temporarily held to be used and executed by a device, program or the system. Data is sent to and stored in memory or other volatile storage until the program or computer requests it for execution. "Spool" is technically an acronym for simultaneous peripheral operations online.
+
+9.What is semaphore and mutex (Differences might be asked)? Define Binary semaphore.
+A Mutex is different than a semaphore as it is a locking mechanism while a semaphore is a signalling mechanism. A binary semaphore can be used as a Mutex but a Mutex can never be used as a semaphore.
+
+10.Belady’s Anomaly
+
+In computer storage, Bélády's anomaly is the phenomenon in which increasing the number of page frames results in an increase in the number of page faults for certain memory access patterns. This phenomenon is commonly experienced when using the first-in first-out (FIFO) page replacement algorithm.
+
+11.Starving and Aging in OS
+Starvation is the problem that occurs when high priority processes keep executing and low priority processes get blocked for indefinite time. In heavily loaded computer system, a steady stream of higher-priority processes can prevent a low-priority process from ever getting the CPU.
+Aging is a technique of gradually increasing the priority of processes that wait in the system for a long time. 
+
+12.Why does trashing occur? 
+Thrashing occurs when there are too many pages in memory, and each page refers to another page. The real memory shortens in capacity to have all the pages in it, so it uses 'virtual memory'. ... If the CPU is too busy in doing this task, thrashing occurs.
+
+13.What is paging and why do we need it? 
+Paging is a memory management scheme that eliminates the need for contiguous allocation of physical memory. This scheme permits the physical address space of a process to be non – contiguous
+
+14.Demand Paging, Segmentation
+In demand paging, the pages are of equal size. While in segmentation, segments can be of different size. ... In demand paging, on demand pages are loaded in the memory. In segmentation, during compilation segments are allocated to the program.
+
+15.Real Time Operating System, types of RTOS. 
+
+Real-time operating systems (RTOS) are used in environments where a large number of events, mostly external to the computer system, must be accepted and processed in a short time or within certain deadlines.
+
+16.Difference between main memory and secondary memory. 
+Primary memory is directly accessible by Processor/CPU. Secondary memory is not directly accessible by the CPU. ... The memory devices used for primary memory are semiconductor memories. The secondary memory devices are magnetic and optical memories.
+
+17.Dynamic Binding 
+Dynamic binding is determining the method to invoke at runtime instead of at compile time. Dynamic binding is also referred to as late binding. In Objective-C, all methods are resolved dynamically at runtime. The exact code executed is determined by both the method name (the selector) and the receiving object.
+
+18.FCFS Scheduling 
+
+First come first serve (FCFS) scheduling algorithm simply schedules the jobs according to their arrival time. The job which comes first in the ready queue will get the CPU first. FCFS scheduling may cause the problem of starvation if the burst time of the first process is the longest among all the jobs
+
+19.SJF Scheduling 
+Shortest Job First (SJF) is an algorithm in which the process having the smallest execution time is chosen for the next execution. This scheduling method can be preemptive or non-preemptive. It significantly reduces the average waiting time for other processes awaiting execution.
+
+20.SRTF Scheduling 
+Shortest remaining time, also known as shortest remaining time first, is a scheduling method that is a preemptive version of shortest job next scheduling. In this scheduling algorithm, the process with the smallest amount of time remaining until completion is selected to execute
+
+21.LRTF Scheduling 
+The Longest Remaining time First(LRTF) scheduling is the preemptive version of Longest Job First(LJF) scheduling. This scheduling algorithm is used by the operating system in order to schedule incoming processes so that they can be executed in a systematic way.
+
+22.Priority Scheduling 
+Priority scheduling is a non-preemptive algorithm and one of the most common scheduling algorithms in batch systems. Each process is assigned first arrival time (less arrival time process first) if two processes have same arrival time, then compare to priorities (highest process first)
+
+23.Round Robin Scheduling 
+Round-robin (RR) is one of the algorithms employed by process and network schedulers in computing. As the term is generally used, time slices (also known as time quanta) are assigned to each process in equal portions and in circular order, handling all processes without priority (also known as cyclic executive).
+
+24.Producer Consumer Problem 
+The Producer-Consumer problem is a classic problem this is used for multi-process synchronization i.e. synchronization between more than one processes. In the producer-consumer problem, there is one Producer that is producing something and there is one Consumer that is consuming the products produced by the Producer.
+
+25.Banker’s Algorithm 
+The banker's algorithm is a resource allocation and deadlock avoidance algorithm that tests for safety by simulating the allocation for predetermined maximum possible amounts of all resources, then makes an “s-state” check to test for possible activities, before deciding whether allocation should be allowed to continue
+
+26.Explain Cache
+A cache is a reserved storage location that collects temporary data to help websites, browsers, and apps load faster. Whether it's a computer, laptop or phone, web browser or app, you'll find some variety of a cache. A cache makes it easy to quickly retrieve data, which in turn helps devices run faster.
+
+27.Diff between direct mapping and associative mapping 
+
+In a cache system, direct mapping maps each block of main memory into only one possible cache line. Associative mapping permits each main memory block to be loaded into any line of the cache.
+
+28.Diff between multitasking and multiprocessing 
+The execution of more than one task simultaneously is known as multitasking. The availability of more than one processor per system, that can execute several set of instructions in parallel is known as multiprocessing. ... In this, more than one process can be executed at a time.
+
+
+									#DBMS
+
+1.What is DBMS ? Mention advantages.. 
+A Database Management System (DBMS) is defined as the software system that allows users to define, create, maintain and control access to the database. DBMS makes it possible for end users to create, read, update and delete data in database. It is a layer between programs and data.
+
+2.What is Database? 
+A database is an organized collection of structured information, or data, typically stored electronically in a computer system. ... The data can then be easily accessed, managed, modified, updated, controlled, and organized. Most databases use structured query language (SQL) for writing and querying data.
+
+3.What is a database system? 
+A database is an organized collection of structured information, or data, typically stored electronically in a computer system. ... Together, the data and the DBMS, along with the applications that are associated with them, are referred to as a database system, often shortened to just database.
+
+4.What is RDBMS ? Properties.. 
+Stands for "Relational Database Management System." An RDBMS is a DBMS designed specifically for relational databases. An RDBMS may also provide a visual representation of the data. ... For example, it may display data in a tables like a spreadsheet, allowing you to view and even edit individual values in the table.
+
+5.Types of database languages 
+Here are four types of database languages and their uses:
+Data definition language (DDL) ...
+Data manipulation language (DML) ...
+Data control language (DCL) ...
+Transaction control language (TCL)
+
+6.ACID properties (VVVVV IMP) 
+The ACID properties, in totality, provide a mechanism to ensure correctness and consistency of a database in a way such that each transaction is a group of operations that acts a single unit, produces consistent results, acts in isolation from other operations and updates that it makes are durably stored
+
+7.Difference between vertical and horizontal scaling 
+While horizontal scaling refers to adding additional nodes, vertical scaling describes adding more power to your current machines. For instance, if your server requires more processing power, vertical scaling would mean upgrading the CPUs. You can also vertically scale the memory, storage, or network speed
+
+8.what is sharding?
+Sharding is a database partitioning technique used by blockchain companies with the purpose of scalability, enabling them to process more transactions per second. ... Sharding can help reduce the latency or slowness of a network since it splits a blockchain network into separate shards.
+
+9.Keys in DBMS 
+Primary Key.
+Candidate Key.
+Super Key.
+Foreign Key.
+Composite Key.
+Alternate Key.
+Unique Key.
+
+10.Types of relationship 
+One-to-One Relationship.
+One-to-Many or Many-to-One Relationship.
+Many-to-Many Relationship.
+
+11.Data abstraction in DBMS, three levels of it 
+There are mainly three levels of data abstraction: Internal Level, Conceptual or Logical Level or External or View level.
+The internal schema defines the physical storage structure of the database.
+The conceptual schema describes the Database structure of the whole database for the community of users.
+
+12.Indexing in DBMS 
+Indexing is a data structure technique to efficiently retrieve records from the database files based on some attributes on which the indexing has been done. Indexing in database systems is similar to what we see in books. ... Clustering Index − Clustering index is defined on an ordered data file.
+
+13.What is DDL (Data Definition Language) 
+Data Definition Language (DDL) is a standard for commands that define the different structures in a database. DDL statements create, modify, and remove database objects such as tables, indexes, and users. Common DDL statements are CREATE, ALTER, and DROP.
+
+14.What is DML (Data Manipulation Language)
+
+DML is Data Manipulation Language which is used to manipulate data itself. For example: insert, update, delete are instructions in SQL
+
+15.What is normalization ? Types of them .. 
+Normalization is the process of organizing data into a related table; it also eliminates redundancy and increases the integrity which improves performance of the query. To normalize a database, we divide the database into tables and establish relationships between the tables.
+
+16.What is denormalization ? 
+
+Denormalization is a database optimization technique in which we add redundant data to one or more tables. ... For example, in a normalized database, we might have a Courses table and a Teachers table. Each entry in Courses would store the teacherID for a Course but not the teacherName.
+
+17.What is functional dependency ? 
+
+Functional Dependency (FD) is a constraint that determines the relation of one attribute to another attribute in a Database Management System (DBMS). Functional Dependency helps to maintain the quality of data in the database. It plays a vital role to find the difference between good and bad database design.
+
+18.E-R Model ? 
+ER model stands for an Entity-Relationship model. It is a high-level data model. This model is used to define the data elements and relationship for a specified system. It develops a conceptual design for the database. It also develops a very simple and easy to design view of data.
+
+19. Conflict Serializability in DBMS .. 
+
+Conflict Serializable: A schedule is called conflict serializable if it can be transformed into a serial schedule by swapping non-conflicting operations. Conflicting operations: Two operations are said to be conflicting if all conditions satisfy: They belong to different transactions. They operate on the same data item.
+
+20.Explain Normal forms in DBMS 
+Normalization is the process of minimizing redundancy from a relation or set of relations. Redundancy in relation may cause insertion, deletion and updation anomalies. So, it helps to minimize the redundancy in relations. Normal forms are used to eliminate or reduce redundancy in database tables.
+
+21.What is CCP ? (Concurrency Control Protocols) 
+The concurrency control protocols ensure the atomicity, consistency, isolation, durability and serializability of the concurrent execution of the database transactions. Therefore, these protocols are categorized as: Lock Based Concurrency Control Protocol. Time Stamp Concurrency Control Protocol.
+
+22.Entity, Entity Type, Entity Set, Weak Entity Set.. 
+
+An entity set that does not have a primary key is referred to as a weak entity set. The existance of a weak entity set depends on the existence of a strong entity set; it must relate to the strong set via a on-to-many relationship set.
+An entity is a real-world thing which can be distinctly identified like a person, place or a concept. It is an object which is distinguishable from others. If we cannot distinguish it from others then it is an object but not an entity. An entity can be of two types:
+
+Tangible Entity: Tangible Entities are those entities which exist in the real world physically. Example: Person, car, etc.
+
+Intangible Entity: Intangible Entities are those entities which exist only logically and have no physical existence. Example: Bank Account, etc.
+
+23.What are SQL commands ? Types of them.. 
+There are five types of SQL commands: DDL, DML, DCL, TCL, and DQL.
+...
+Types of SQL Commands
+Data Definition Language (DDL) ...
+Data Manipulation Language. ...
+Data Control Language. ...
+Transaction Control Language. ...
+Data Query Language.
+
+24.Nested Queries in SQL ? 
+
+A nested query consists of two or more ordinary queries nested in such a way that the results of each inner query ( subselect ) are used in the comparison test for the selection clause of the next outer query (or another command statement).
+
+25.What is JOIN .. Explain types of JOINs 
+Different Types of SQL JOINs
+(INNER) JOIN : Returns records that have matching values in both tables. LEFT (OUTER) JOIN : Returns all records from the left table, and the matched records from the right table. RIGHT (OUTER) JOIN : Returns all records from the right table, and the matched records from the left table.
+
+26.Inner and Outer Join 
+There are four main types of joins: inner join, full outer join, left outer join and right outer join. The major difference between inner and outer joins is that inner joins result in the intersection of two tables, whereas outer joins result in the union of two tables.
+
+27.Practice sql queries from leetcode
+
+
+28.Diff between 2 tier and 3 tier architecture 
+Two-tier architecture consists of two layers : Client Tier and Database (Data Tier). Three-tier architecture consists of three layers : Client Layer, Business Layer and Data Layer. ... Two-tier architecture runs slower. Three-tier architecture runs faster.
+
+29.Diff between TRUNCATE and DELETE command ..
+The DELETE statement removes rows one at a time and records an entry in the transaction log for each deleted row. TRUNCATE TABLE removes the data by deallocating the data pages used to store the table data and records only the page deallocations in the transaction log. ... DELETE command is slower than TRUNCATE command.
+
+30.Difference between Intension and Extension in a DataBase
+Intension and extension, in logic, correlative words that indicate the reference of a term or concept: “intension” indicates the internal content of a term or concept that constitutes its formal definition; and “extension” indicates its range of applicability by naming the particular objects that it denotes.
+
+31.Difference between share lock and exclusive lock, definition of lock 
+Shared lock can be placed on objects that do not have an exclusive lock already placed on them. Exclusive lock can only be placed on objects that do no have any other kind of lock. ... Any number of transaction can hold shared lock on an item. Exclusive lock can be hold by only one transaction.
+
+
+								#NETWORK
+
+1.Define network 
+defined as a set of devices connected to each other using a physical transmission medium. For Example, A computer network is a group of computers connected with each other to communicate and share information and resources like hardware, data, and software.
+
+2.What do you mean by network topology, and explain types of them 
+Network topology refers to the physical or logical layout of a network. ... There are two types of network topologies: physical and logical. Physical topology emphasizes the physical layout of the connected devices and nodes, while the logical topology focuses on the pattern of data transfer between network nodes
+
+3.Define bandwidth, node and link ? 
+Bandwidth is measured as the amount of data that can be transferred from one point to another within a network in a specific amount of time. ... The term bandwidth refers to the transmission capacity of a connection and is an important factor when determining the quality and speed of a network or the internet connection.
+
+4.Explain TCP model .. 
+TCP/IP Reference Model is a four-layered suite of communication protocols. ... TCP stands for Transmission Control Protocol and IP stands for Internet Protocol. The four layers in the TCP/IP protocol suite are − Host-to- Network Layer −It is the lowest layer that is concerned with the physical transmission of data.
+
+5.Layers of OSI model 
+In the OSI reference model, the communications between a computing system are split into seven different abstraction layers: Physical, Data Link, Network, Transport, Session, Presentation, and Application.
+
+6.Significance of Data Link Layer
+The data link layer is responsible for multiplexing data streams, data frame detection, medium access, and error control. It ensures reliable point-to-point and point-to-multipoint connections in a communication network.
+
+7.Define gateway, difference between gateway and router .. 
+A Router is a networking layer system used to manage and forward data packets to computer networks. A gateway is simply a device or hardware that acts as a "gate" between the networks. It could also be defined as a node that acts as an entry for other network nodes.
+
+8.What does ping command do ? 
+PING (Packet Internet Groper) command is used to check the network connectivity between host and server/host. ... Ping uses ICMP(Internet Control Message Protocol) to send an ICMP echo message to the specified host if that host is available then it sends ICMP reply message.
+
+9.What is DNS, DNS forwarder, NIC, ? 
+DNS forwarding is the process by which particular sets of DNS queries are handled by a designated server, rather than being handled by the initial server contacted by the client. ... Having all DNS servers configured to handle both external and internal resolution can impact the performance and security of a network.
+
+10.What is MAC address ? 
+
+Both MAC Address and IP Address are used to uniquely defines a device on the internet. ... MAC Address stands for Media Access Control Address. IP Address stands for Internet Protocol Address. 2. MAC Address is a six byte hexadecimal address.
+
+11.What is IP address, private IP address, public IP address, APIPA ? 
+
+A public IP address identifies you to the wider internet so that all the information you're searching for can find you. A private IP address is used within a private network to connect securely to other devices within that same network.
+
+12.Difference between IPv4 and IPv6
+The main difference between IPv4 and IPv6 is the address size of IP addresses. The IPv4 is a 32-bit address, whereas IPv6 is a 128-bit hexadecimal address. IPv6 provides a large address space, and it contains a simple header as compared to IPv4.
+
+13.What is subnet ? 
+A subnet, or subnetwork, is a network inside a network. Subnets make networks more efficient. ... When a network receives data packets from another network, it will sort and route those packets by subnet so that the packets do not take an inefficient route to their destination.
+
+14.Firewalls 
+A firewall is a network security device that monitors incoming and outgoing network traffic and decides whether to allow or block specific traffic based on a defined set of security rules. Firewalls have been a first line of defense in network security for over 25 years. ... A firewall can be hardware, software, or both.
+
+15.Different type of delays 
+Transmission Delay: The time taken to transmit a packet from the host to the transmission medium is called Transmission delay. ...
+Propagation delay: ...
+Queueing delay: ...
+Processing delay:
+
+16.3 way handshaking 
+
+THREE-WAY HANDSHAKE or a TCP 3-way handshake is a process which is used in a TCP/IP network to make a connection between the server and client. It is a three-step process that requires both the client and server to exchange synchronization and acknowledgment packets before the real data communication process starts.
+
+17.Server-side load balancer
+
+Server Side load balancing is the proxy(reverse proxy) in front of the application server and LB will forward the request to application server depend on the routing setting. Pros: Initial setting is easy.
+
+18.RSA Algorithm 
+RSA algorithm is asymmetric cryptography algorithm. ... As the name describes that the Public Key is given to everyone and Private key is kept private. An example of asymmetric cryptography : A client (for example browser) sends its public key to the server and requests for some data.
+
+19.What is HTTP and HTTPS protocol ? 
+The only difference between the two protocols is that HTTPS uses TLS (SSL) to encrypt normal HTTP requests and responses. As a result, HTTPS is far more secure than HTTP. A website that uses HTTP has http:// in its URL, while a website that uses HTTPS has https://.
+
+20.What is SMTP protocol ? 
+The Simple Mail Transfer Protocol (SMTP) is an internet standard communication protocol for electronic mail transmission. Mail servers and other message transfer agents use SMTP to send and receive mail messages.
+
+21.TCP and UDP protocol, prepare differences
+
+TCP is a connection-oriented protocol, whereas UDP is a connectionless protocol. A key difference between TCP and UDP is speed, as TCP is comparatively slower than UDP. Overall, UDP is a much faster, simpler, and efficient protocol, however, retransmission of lost data packets is only possible with TCP.
+
+22. What happens when you enter “google.com” (very very famous question) 
+The google.com name server will find the matching IP address for maps.google.com in its' DNS records and return it to your DNS recursor, which will send it back to your browser. ... Otherwise, they will reach the correct DNS server, grab the correct IP address, and come back to your browser.
+
+You enter a URL into a web browser. The browser looks up the IP address for the domain name via DNS. The browser sends a HTTP request to the server. The server sends back a HTTP response.
+
+23.Hub vs Switch 
+Hub and Switch are both network connecting devices. Hub works at physical layer and is responsible to transmit the signal to port to respond where the signal was received whereas Switch enable connection setting and terminating based on need. ... Hub works in Physical Layer. Switch works in Data Link Layer
+
+24.VPN, advantages and disadvantages of it 
+VPN Advantages. VPNs allow users to hide their network information and safely browse the web no matter their location. ...
+VPN Disadvantages. Specific activities that require high bandwidth, such as gaming, might not be able to function using a VPN, but they are easily enabled and disabled.
+
+25. LAN 
+
+local area network
+A local area network (LAN) is a collection of devices connected together in one physical location, such as a building, office, or home. ... In contrast, a wide area network (WAN) or metropolitan area network (MAN) covers larger geographic area
+
+A local-area network (LAN) connects the computer hardware in a localized area such as an office or home. Typically, LANs use wired connections to link the computers to each other and to a variety of peripheral devices such as printers.
+
+
+
+
